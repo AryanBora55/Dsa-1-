@@ -103,3 +103,48 @@ void simple(int compact[MAX][3], int trans[MAX][3])
     {
         for (int j=1; j<=totalVal; j++) 
 	{
+            if (compact[j][1] == i) 
+	    {
+                trans[k][0] = compact[j][1]; 
+                trans[k][1] = compact[j][0]; 
+                trans[k][2] = compact[j][2]; 
+                k++;
+            }
+        }
+    }
+}
+
+void fast(int compact[MAX][3], int trans[MAX][3]) 
+{
+    int loc, i, col_no;
+    int columns = compact[0][1];
+    int non_zeros = compact[0][2];
+    int total[MAX];
+    int index[MAX];
+    for (i=0; i<columns; i++) 
+    {
+        total[i] = 0;
+    }
+    for (i=1; i<=non_zeros; i++) 
+    {
+        col_no = compact[i][1];
+        total[col_no]++;
+    }
+    index[0] = 1;
+    for (i=1; i<=columns; i++) 
+    {
+        index[i] = index[i - 1] + total[i - 1];
+    }
+    trans[0][0] = compact[0][1]; 
+    trans[0][1] = compact[0][0]; 
+    trans[0][2] = compact[0][2]; 
+    for (i=1; i<=non_zeros; i++) 
+    {
+        col_no = compact[i][1];
+        loc = index[col_no];
+        trans[loc][0] = compact[i][1]; 
+        trans[loc][1] = compact[i][0]; 
+        trans[loc][2] = compact[i][2]; 
+        index[col_no]++;
+    }
+}
